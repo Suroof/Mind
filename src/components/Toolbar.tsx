@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTopic, loadMindMap, createNewMindMap, saveMindMap, undoAction } from '../store/mindMapSlice';
 import { RootState } from '../store';
 import { MindMap } from '../types/MindMap';
-import {
-  getAllMindMaps,
-  publishMindMap
-} from '../utils/cloudStorage';
+import { getAllMindMaps } from '../utils/cloudStorage';
 import '../styles/donate.css';
 
 interface ToolbarProps {
@@ -19,7 +16,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
   const [showSavedMaps, setShowSavedMaps] = useState(false);
   const [savedMaps, setSavedMaps] = useState<MindMap[]>([]);
   const [showDonateModal, setShowDonateModal] = useState(false);
-  const [isPublic, setIsPublic] = useState(true);
 
   useEffect(() => {
     setSavedMaps(getAllMindMaps());
@@ -50,21 +46,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
   const handleNew = () => {
     dispatch(createNewMindMap());
     onNotification('已创建新的思维导图', 'success');
-  };
-
-  const handleShare = async () => {
-    if (!currentMap) return;
-
-    // 这里应该从用户系统获取，这里模拟一个用户
-    const userId = 'user123';
-    const userName = '测试用户';
-
-    const success = await publishMindMap(currentMap, userId, userName, isPublic);
-    if (success) {
-      alert('分享成功！');
-    } else {
-      alert('分享失败，请重试。');
-    }
   };
 
   const handleUndo = () => {
