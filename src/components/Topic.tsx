@@ -38,7 +38,7 @@ const Topic: React.FC<TopicProps> = ({ topic, level = 0 }) => {
         showNotification(`还有${incompleteCount}个子主题未完成`);
       }
     }
-  }, [dispatch, topic.id]);
+  }, [dispatch, topic]);
 
   const handleAddSubTopic = () => {
     dispatch(addTopic({
@@ -178,24 +178,6 @@ const Topic: React.FC<TopicProps> = ({ topic, level = 0 }) => {
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const renderTopicContent = () => {
-    return (
-      <div className="topic-content">
-        <span className="topic-title" onClick={handleTitleClick}>
-          {topic.title}
-        </span>
-        {topic.content && (
-          <div className="topic-image">
-            <img src={topic.content} alt={topic.title} />
-            <button className="delete-image" onClick={handleImageDelete}>
-              ×
-            </button>
-          </div>
-        )}
-      </div>
-    );
   };
 
   return (
