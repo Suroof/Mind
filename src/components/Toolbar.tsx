@@ -7,6 +7,7 @@ import {
   getAllMindMaps,
   publishMindMap
 } from '../utils/cloudStorage';
+import '../styles/donate.css';
 
 interface ToolbarProps {
   onNotification: (message: string, type?: 'success' | 'info') => void;
@@ -17,7 +18,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
   const currentMap = useSelector((state: RootState) => state.mindMap.currentMap);
   const [showSavedMaps, setShowSavedMaps] = useState(false);
   const [savedMaps, setSavedMaps] = useState<MindMap[]>([]);
-  const [showShareModal, setShowShareModal] = useState(false);
+  const [showDonateModal, setShowDonateModal] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
 
   useEffect(() => {
@@ -61,7 +62,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
     const success = await publishMindMap(currentMap, userId, userName, isPublic);
     if (success) {
       alert('分享成功！');
-      setShowShareModal(false);
     } else {
       alert('分享失败，请重试。');
     }
@@ -101,12 +101,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
             </svg>
             撤销
           </button>
-          <button onClick={() => setShowShareModal(true)} className="toolbar-btn">
+          <button onClick={() => setShowDonateModal(true)} className="toolbar-btn donate-btn">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M12 4a2 2 0 100-4 2 2 0 000 4zM4 10a2 2 0 100-4 2 2 0 000 4zM12 16a2 2 0 100-4 2 2 0 000 4z" fill="currentColor"/>
-              <path d="M6 9l4-2M6 7l4 2" stroke="currentColor" strokeWidth="2"/>
+              <path d="M8 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" stroke="currentColor" strokeWidth="2"/>
             </svg>
-            分享
+            赞赏
           </button>
         </div>
         <div className="toolbar-right">
@@ -147,37 +146,17 @@ const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
         </div>
       )}
 
-      {showShareModal && (
-        <div className="share-modal-overlay">
-          <div className="share-modal">
-            <h3>分享思维导图</h3>
-            <div className="share-options">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                />
-                公开分享
-              </label>
-              <p className="share-tip">
-                {isPublic ?
-                  '所有人都可以查看您的思维导图' :
-                  '仅自己可见'
-                }
-              </p>
+      {showDonateModal && (
+        <div className="donate-modal-overlay" onClick={() => setShowDonateModal(false)}>
+          <div className="donate-modal" onClick={e => e.stopPropagation()}>
+            <h3>赞赏作者</h3>
+            <p className="donate-text">创作不易，您的每一份支持都是我前进的动力 ❤️</p>
+            <div className="donate-image">
+              <img src="/Gift.jpg" alt="赞赏码" />
             </div>
-            <div className="share-buttons">
-              <button onClick={handleShare} className="share-btn">
-                确认分享
-              </button>
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="cancel-btn"
-              >
-                取消
-              </button>
-            </div>
+            <button className="close-modal-btn" onClick={() => setShowDonateModal(false)}>
+              关闭
+            </button>
           </div>
         </div>
       )}
