@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addTopic, loadMindMap, createNewMindMap, saveMindMap, undoAction } from '../store/mindMapSlice';
-import { RootState } from '../store';
 import { MindMap } from '../types/MindMap';
 import { getAllMindMaps } from '../utils/cloudStorage';
 import '../styles/donate.css';
@@ -12,7 +11,6 @@ interface ToolbarProps {
 
 const Toolbar: React.FC<ToolbarProps> = ({ onNotification }) => {
   const dispatch = useDispatch();
-  const currentMap = useSelector((state: RootState) => state.mindMap.currentMap);
   const [showSavedMaps, setShowSavedMaps] = useState(false);
   const [savedMaps, setSavedMaps] = useState<MindMap[]>([]);
   const [showDonateModal, setShowDonateModal] = useState(false);
